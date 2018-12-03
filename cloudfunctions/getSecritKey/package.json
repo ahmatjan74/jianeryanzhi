@@ -1,0 +1,12 @@
+{
+  "name": "mini",
+  "version": "1.0.0",
+  "private": true,
+  "description": "jianeryanzhi",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "wx-server-sdk": "0.0.26"
+  }
+}

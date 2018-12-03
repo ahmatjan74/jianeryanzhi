@@ -1,0 +1,63 @@
+//获取用户运动数据
+Taro.getSetting().then((res) => {    //获取数据
+      if(!res.authSetting['scope.werun']) {  //获取werun数据权限
+        Taro.authorize({
+          scope: 'scope.werun'
+        }).then(() => {
+          Taro.getWeRunData().then((res1) => {  //获取权限
+            var werun = res1.encryptedData;
+            this.getWeRunDataFrom(werun) // 解密
+          })
+        })
+      } else {
+        Taro.getWeRunData().then((res) => {
+          var werun = res.encryptedData;
+          this.getWeRunDataFrom(werun)
+        })
+      }
+    })
+
+
+getWeRunDataFrom = (werun) => {  //加密的运动数据
+    var appId = 'wx8acc5c6ba6cddf2b'  //开发者 appid
+    Taro.login().then((res) => {  //获取code
+      wx.cloud.callFunction({  //调用getSecrkKey方法 ，在服务端获取
+               name: 'getSecritKey',
+               data: {
+                 code: res.code
+               }
+             }).then((res1) => {
+               var sessionKey = res1.result.res.session_key //获取session_key
+               Taro.getUserInfo().then((res2) => {
+                 //var userInfo = res2;
+                 //console.log(userInfo)
+                 var iv = res2.iv;
+                 Werun(appId, sessionKey, iv, werun)
+                 //console.log("----------")
+                 //console.log(data)
+                 //console.log("----------")
+               })
+             });
+           });
+
+    //getSecretKey 服务端开发，
+    const cloud = require('wx-server-sdk')
+    const axios = require('axios')
+    cloud.init();
+    exports.main =  async(event, context, cb) => {
+      const appId = 'wx8acc5c6ba6cddf2b';
+      const secrit = '87a5102052100a51f571687d8068787d';
+      const jscode = event.code;
+      console.log("event------",event)
+      const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${secrit}&js_code=${jscode}&grant_type=authorization_code`
+
+      var response = await axios({
+        method: 'GET',
+        url: url,
+        responseType: 'application/json'
+      })
+      console.log('response',response)
+      return {
+        res: response.data
+      }
+    }

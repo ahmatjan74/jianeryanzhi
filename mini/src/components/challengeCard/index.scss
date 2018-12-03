@@ -1,0 +1,51 @@
+.challenge-card{
+  flex: 1;
+  flex-direction: column;
+  width: 90%;
+  margin-left: 4%;
+  margin-top: 20px;
+  height: 200px;
+  border: 1px solid #eee;
+  border-radius: 25px;
+  box-shadow: 5px 5px 55px #7F7F7F;
+
+  .challenge-title{
+    flex-direction: row;
+    justify-content: space-between;
+
+    .challenge-title-name {
+      padding: 25px 15px 0px 15px;
+      font-size: 32px;
+      color: lightgray;
+    }
+    .challenge-period{
+      float: right;
+      font-size: 24px;
+      border: 1px solid #eeeeee;
+      border-radius: 25px;
+      padding: 5px;
+      text-align: center;
+      color: gray;
+    }
+  }
+  .challenge-description{
+    color: lightgray;
+    padding: 10px;
+    font-size: 15px;
+  }
+  .challenge-total-people{
+    flex-direction: row;
+    .image-user{
+      width: 40px;
+      height: 40px;
+      border-radius: 40px;
+      border: 1px solid white;
+    }
+    .total-user{
+      font-size: 24px;
+      text-align: center;
+      line-height: 40px;
+      padding: 8px;
+    }
+  }
+}
